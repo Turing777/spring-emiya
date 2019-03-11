@@ -7,4 +7,5 @@ package com.avalon.emiya.example.dao;
  */
 public interface IExampleEmiyaDao {
 
+    String getDao();
 }

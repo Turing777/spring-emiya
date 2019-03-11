@@ -32,8 +32,7 @@ public class InjectorProvider {
         int count = 0;
         for (Constructor<?> constructor : candidate.getDeclaredConstructors()) {
             Autowired autoWired = constructor.getAnnotation(Autowired.class);
-            Inject inject = constructor.getAnnotation(Inject.class);
-            if (autoWired != null || inject != null) {
+            if (autoWired != null) {
                 count++;
                 if (count > 1) {
                     throw new RuntimeException("the entity: " + candidate.getName() + " has more than one constructor to be injected , it can't be injected !");
@@ -51,8 +50,7 @@ public class InjectorProvider {
             field.setAccessible(true);
 
             Autowired autoWired = field.getAnnotation(Autowired.class);
-            Inject inject = field.getAnnotation(Inject.class);
-            if (autoWired != null || inject != null) {
+            if (autoWired != null) {
 
                 if (Modifier.isFinal(field.getModifiers())) {
                     throw new RuntimeException("the field: " + field.getName() + "is final , it can't be injected !");
@@ -69,9 +67,7 @@ public class InjectorProvider {
                 }
 
                 boolean isRequire = false;
-                if (autoWired != null) {
-                    isRequire = autoWired.required();
-                }
+                isRequire = autoWired.required();
 
                 String defaultName = beanNameGenerator.generateBeanName(field.getType());
 
@@ -109,8 +105,7 @@ public class InjectorProvider {
         for (Method method : methods) {
             method.setAccessible(true);
             Autowired autoWired = method.getAnnotation(Autowired.class);
-            Inject inject = method.getAnnotation(Inject.class);
-            if (autoWired != null || inject != null) {
+            if (autoWired != null) {
                 if (Modifier.isAbstract(method.getModifiers())) {
                     throw new RuntimeException("the method: " + method.getName() + "is abstract , it can't be injected !");
                 }
@@ -119,10 +114,8 @@ public class InjectorProvider {
                 if (!methodName.startsWith("set")) {
                     throw new RuntimeException("the method: " + method.getName() + "is not setter , it can't be injected !");
                 }
-                boolean isRequire = false;
-                if (autoWired != null) {
-                    isRequire = true;
-                }
+                boolean isRequire = autoWired.required();
+
                 List<InjectorData> injectorDataInfo = getParameterInjectDatas(beanNameGenerator, isRequire, method.getParameters());
                 methodInjectorAttributes.add(new MethodInjectorAttribute(method, injectorDataInfo, isRequire));
                 injectorDatas.addAll(injectorDataInfo);

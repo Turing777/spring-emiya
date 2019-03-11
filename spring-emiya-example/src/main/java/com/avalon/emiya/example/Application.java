@@ -15,5 +15,6 @@ public class Application {
         ApplicationContext applicationContext = new DefaultApplicationContext("com.avalon.emiya.example");
         ExampleEmiyaController exampleEmiyaController = applicationContext.getBean(ExampleEmiyaController.class);
         System.out.println(exampleEmiyaController.getExample());
+        System.out.println(exampleEmiyaController.getExampleEmiyaDao().getDao());
     }
 }

@@ -10,4 +10,14 @@ import com.avalon.emiya.core.annotation.Repository;
 @Repository
 public class ExampleEmiyaDaoImpl implements IExampleEmiyaDao {
 
+    private String dao = "dao";
+
+    @Override
+    public String getDao() {
+        return dao;
+    }
+
+    public void setDao(String dao) {
+        this.dao = dao;
+    }
 }
